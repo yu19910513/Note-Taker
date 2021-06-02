@@ -7,7 +7,7 @@ let newInfo; // new data to be put into the existied file
 let notes; // existed file
 
 const Note_Taker = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 
 Note_Taker.use(express.urlencoded({extended: true }));
