@@ -48,7 +48,7 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
 // ---------------------------------------------------------------------------------------
 
     // GET method - HOME PAGE
-     Note_Taker.get('*', (ask, ans) => {
+     Note_Taker.get('/', (ask, ans) => {
         ans.sendFile(path.join(__dirname, "./public/index.html"));
     });
 
