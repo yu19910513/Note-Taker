@@ -7,7 +7,7 @@ let newInfo; // new data to be put into the existied file
 let notes; // existed file
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 
 
 app.use(express.urlencoded({extended: true }));
@@ -34,30 +34,30 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     notes = JSON.parse(data);
  // ---------------------------------------------------------------------------------------
     // GET method - 'get page', 'get listed item', 'get updated page'
-    app.get("/notes", (ask, ans)=> {
-        ans.sendFile(path.join(__dirname, "./public/notes.html"))
+    app.get("/notes", (req, res)=> {
+        res.sendFile(path.join(__dirname, "./public/notes.html"))
     });
 
-    app.get("/api/notes", (ask, ans) => {
-        ans.json(notes);
+    app.get("/api/notes", (req, res) => {
+        res.json(notes);
     });
 
-    app.get("/api/notes/:id", (ask, ans) => {
-        ans.JSON(notes[ask.params.id]);
+    app.get("/api/notes/:id", (req, res) => {
+        res.JSON(notes[req.params.id]);
     });
 // ---------------------------------------------------------------------------------------
 
     // GET method - HOME PAGE
-     app.get('/', (ask, ans) => {
-        ans.sendFile(path.join(__dirname, "./public/index.html"));
+     app.get('/', (req, res) => {
+        res.sendFile(path.join(__dirname, "./public/index.html"));
     });
 
 
  // ---------------------------------------------------------------------------------------
 
     //POST method - 'to create new item and store it in data (JSON file)'
-    app.post("/api/notes", (ask, ans) => {
-        newInfo = ask.body;
+    app.post("/api/notes", (req, res) => {
+        newInfo = req.body;
         notes.push(newInfo);
         reloadPage();
         console.log('Database is updated: \n' + newInfo.title + ": " + newInfo.text);
@@ -66,8 +66,8 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
  // ---------------------------------------------------------------------------------------
 
     // Delete method - 'to remove the selected item from data, and update'
-    app.delete("/api/notes/:id", (ask, ans) => {
-        notes.splice(ask.params.id, 1);
+    app.delete("/api/notes/:id", (req, res) => {
+        notes.splice(req.params.id, 1);
         reloadPage();
         console.log('Got a DELETE request!')
     })
