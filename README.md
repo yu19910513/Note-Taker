@@ -15,7 +15,7 @@ Installation is not needed for this deployed app. Just need to simply click the 
 
 ## Usage
 ![demo](img/note_taker.gif)
-### click her to deployed app (https://rex-note-taker.herokuapp.com)
+### click her to the deployed app (https://rex-note-taker.herokuapp.com)
 
 
 ## Contributing
