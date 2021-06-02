@@ -60,7 +60,7 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
         newInfo = ask.body;
         notes.push(newInfo);
         reloadPage();
-        console.log('Got a POST ask: \n' + newInfo.title + ": " + newInfo.text);
+        console.log('Database is updated: \n' + newInfo.title + ": " + newInfo.text);
     });
 
  // ---------------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     Note_Taker.delete("/api/notes/:id", (ask, ans) => {
         notes.splice(ask.params.id, 1);
         reloadPage();
-        console.log('Got a DELETE ask!')
+        console.log('Got a DELETE request!')
     })
 
 })
