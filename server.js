@@ -16,7 +16,7 @@ Note_Taker.use(express.static(__dirname));
 
 //function to update the page
 function reloadPage() {
-    fs.writeFile("db/db.json",JSON.stringify(notes,'\t'),err => {
+    fs.writeFile("db/db.json",JSON.stringify(notes),err => {
             if (err) throw err;
             return true
         }
@@ -33,12 +33,6 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     if (err) throw err
     notes = JSON.parse(data);
  // ---------------------------------------------------------------------------------------
-    // GET method - HOME PAGE
-    Note_Taker.get('/', (ask, ans) => {
-        ans.sendFile(path.join(__dirname, "./public/index.html"));
-    });
- // ---------------------------------------------------------------------------------------
-
     // GET method - 'get page', 'get listed item', 'get updated page'
     Note_Taker.get("/notes", (ask, ans)=> {
         ans.sendFile(path.join(__dirname, "./public/notes.html"))
@@ -51,6 +45,13 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     Note_Taker.get("/api/notes/:id", (ask, ans) => {
         ans.JSON(notes[ask.params.id]);
     });
+// ---------------------------------------------------------------------------------------
+
+    // GET method - HOME PAGE
+     Note_Taker.get('*', (ask, ans) => {
+        ans.sendFile(path.join(__dirname, "./public/index.html"));
+    });
+
 
  // ---------------------------------------------------------------------------------------
 
