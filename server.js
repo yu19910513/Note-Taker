@@ -6,13 +6,13 @@ const fs = require("fs");
 let newInfo; // new data to be put into the existied file
 let notes; // existed file
 
-const Note_Taker = express();
+const app = express();
 const PORT = process.env.PORT || 4000;
 
 
-Note_Taker.use(express.urlencoded({extended: true }));
-Note_Taker.use(express.json());
-Note_Taker.use(express.static(__dirname));
+app.use(express.urlencoded({extended: true }));
+app.use(express.json());
+app.use(express.static(__dirname));
 
 //function to update the page
 function reloadPage() {
@@ -24,7 +24,7 @@ function reloadPage() {
 }
 
 //listenr
-Note_Taker.listen(PORT, () => console.log(`Note_Taker awaits your command on PORT ${PORT}`));
+app.listen(PORT, () => console.log(`NOTE_TAKER awaits your command on PORT ${PORT}`));
 
 
 //routes
@@ -34,21 +34,21 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     notes = JSON.parse(data);
  // ---------------------------------------------------------------------------------------
     // GET method - 'get page', 'get listed item', 'get updated page'
-    Note_Taker.get("/notes", (ask, ans)=> {
+    app.get("/notes", (ask, ans)=> {
         ans.sendFile(path.join(__dirname, "./public/notes.html"))
     });
 
-    Note_Taker.get("/api/notes", (ask, ans) => {
+    app.get("/api/notes", (ask, ans) => {
         ans.json(notes);
     });
 
-    Note_Taker.get("/api/notes/:id", (ask, ans) => {
+    app.get("/api/notes/:id", (ask, ans) => {
         ans.JSON(notes[ask.params.id]);
     });
 // ---------------------------------------------------------------------------------------
 
     // GET method - HOME PAGE
-     Note_Taker.get('/', (ask, ans) => {
+     app.get('/', (ask, ans) => {
         ans.sendFile(path.join(__dirname, "./public/index.html"));
     });
 
@@ -56,7 +56,7 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
  // ---------------------------------------------------------------------------------------
 
     //POST method - 'to create new item and store it in data (JSON file)'
-    Note_Taker.post("/api/notes", (ask, ans) => {
+    app.post("/api/notes", (ask, ans) => {
         newInfo = ask.body;
         notes.push(newInfo);
         reloadPage();
@@ -66,7 +66,7 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
  // ---------------------------------------------------------------------------------------
 
     // Delete method - 'to remove the selected item from data, and update'
-    Note_Taker.delete("/api/notes/:id", (ask, ans) => {
+    app.delete("/api/notes/:id", (ask, ans) => {
         notes.splice(ask.params.id, 1);
         reloadPage();
         console.log('Got a DELETE request!')
