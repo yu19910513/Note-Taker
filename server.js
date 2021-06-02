@@ -6,13 +6,13 @@ const fs = require("fs");
 let newInfo; // new data to be put into the existied file
 let notes; // existed file
 
-const app = express();
+const note_taker = express();
 const PORT = process.env.PORT || 3000;
 
 
-app.use(express.urlencoded({extended: true }));
-app.use(express.json());
-app.use(express.static(__dirname));
+note_taker.use(express.urlencoded({extended: true }));
+note_taker.use(express.json());
+note_taker.use(express.static(__dirname));
 
 //function to update the page
 function reloadPage() {
@@ -24,7 +24,7 @@ function reloadPage() {
 }
 
 //listenr
-app.listen(PORT, () => console.log(`NOTE_TAKER awaits your command on PORT ${PORT}`));
+note_taker.listen(PORT, () => console.log(`NOTE_TAKER awaits your command on PORT ${PORT}`));
 
 
 //routes
@@ -34,30 +34,30 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
     notes = JSON.parse(data);
  // ---------------------------------------------------------------------------------------
     // GET method - 'get page', 'get listed item', 'get updated page'
-    app.get("/notes", (req, res)=> {
-        res.sendFile(path.join(__dirname, "./public/notes.html"))
+    note_taker.get("/notes", (ask, ans) => {
+        ans.sendFile(path.join(__dirname, "./public/notes.html"))
     });
 
-    app.get("/api/notes", (req, res) => {
-        res.json(notes);
+    note_taker.get("/api/notes", (ask, ans) => {
+        ans.json(notes);
     });
 
-    app.get("/api/notes/:id", (req, res) => {
-        res.JSON(notes[req.params.id]);
+    note_taker.get("/api/notes/:id", (ask, ans) => {
+        ans.JSON(notes[ask.params.id]);
     });
 // ---------------------------------------------------------------------------------------
 
     // GET method - HOME PAGE
-     app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, "./public/index.html"));
+     note_taker.get('/', (ask, ans) => {
+        ans.sendFile(path.join(__dirname, "./public/index.html"));
     });
 
 
  // ---------------------------------------------------------------------------------------
 
     //POST method - 'to create new item and store it in data (JSON file)'
-    app.post("/api/notes", (req, res) => {
-        newInfo = req.body;
+    note_taker.post("/api/notes", (ask, ans) => {
+        newInfo = ask.body;
         notes.push(newInfo);
         reloadPage();
         console.log('Database is updated: \n' + newInfo.title + ": " + newInfo.text);
@@ -66,8 +66,8 @@ fs.readFile("db/db.json", "utf8", (err, data) => {
  // ---------------------------------------------------------------------------------------
 
     // Delete method - 'to remove the selected item from data, and update'
-    app.delete("/api/notes/:id", (req, res) => {
-        notes.splice(req.params.id, 1);
+    note_taker.delete("/api/notes/:id", (ask, ans) => {
+        notes.splice(ask.params.id, 1);
         reloadPage();
         console.log('Got a DELETE request!')
     })
