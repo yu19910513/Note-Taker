@@ -9,11 +9,13 @@ This project allows student developers to practice building a server for the web
 - [Usage](#usage)
 - [Credits](#credits)
 - [License](#license)
-## Installation
 
+## Installation
+Installation is not needed for this deployed app. Just need to simply click the following url.
 
 ## Usage
-
+![demo](img/note_taker.gif)
+### click her to deployed app (https://rex-note-taker.herokuapp.com)
 
 
 ## Contributing
